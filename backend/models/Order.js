@@ -49,6 +49,13 @@ const orderSchema = new mongoose.Schema({
   orderStatus: { type: String, enum: Object.values(ORDER_STATUSES), default: ORDER_STATUSES.PENDING },
   deliveryAgentId: { type: mongoose.Schema.Types.ObjectId, ref: 'DeliveryAgent', default: null },
   deliveryOtp: { type: String, default: '1234' },
+  proofOfDelivery: {
+    verifiedMethod: { type: String, enum: ['BARCODE_SCAN', 'MANUAL_CODE_ENTRY', 'DIRECT_OVERRIDE', 'NONE'], default: 'NONE' },
+    scannedCode: { type: String, default: '' },
+    verifiedAt: { type: Date, default: null },
+    handoverNotes: { type: String, default: '' },
+    cashCollected: { type: Number, default: 0 }
+  },
   cancellationReason: { type: String, default: '' },
   timeline: [{
     status: { type: String, required: true },

@@ -662,7 +662,7 @@ export const acceptDeliveryRequest = async (req, res, next) => {
 // @access  Private (Delivery Agent)
 export const updateDeliveryStatus = async (req, res, next) => {
   try {
-    const { status, otp } = req.body;
+    const { status, otp, verificationBarcode, podMethod, handoverNotes, cashCollected } = req.body;
     const agent = await DeliveryAgent.findOne({ userId: req.user._id });
     const order = await Order.findOne({ _id: req.params.id, deliveryAgentId: agent._id });
 
@@ -680,6 +680,42 @@ export const updateDeliveryStatus = async (req, res, next) => {
         success: false,
         message: `Invalid status sequence. Expected '${validTransitions[order.orderStatus]}' but received '${status}'`
       });
+    }
+
+    // Doorstep Barcode Verification for DELIVERED status
+    if (status === ORDER_STATUSES.DELIVERED) {
+      if (verificationBarcode) {
+        const cleanScanned = String(verificationBarcode).trim().toUpperCase().replace(/^['"#\s]+|['"#\s]+$/g, '');
+        const targetOrderNum = (order.orderNumber || '').toUpperCase();
+        const rawDigits = targetOrderNum.replace(/[^0-9]/g, '');
+        const scannedDigits = cleanScanned.replace(/[^0-9]/g, '');
+
+        const isExactMatch = cleanScanned === targetOrderNum || cleanScanned === order._id.toString().toUpperCase();
+        const isSuffixMatch = targetOrderNum.endsWith(cleanScanned) || (scannedDigits.length >= 4 && rawDigits.endsWith(scannedDigits));
+
+        if (!isExactMatch && !isSuffixMatch) {
+          return res.status(400).json({
+            success: false,
+            message: `⚠️ Mismatched Barcode! Scanned code "${verificationBarcode}" does not match Order #${order.orderNumber}. Please scan the correct parcel for this customer.`
+          });
+        }
+
+        order.proofOfDelivery = {
+          verifiedMethod: podMethod || 'BARCODE_SCAN',
+          scannedCode: verificationBarcode,
+          verifiedAt: new Date(),
+          handoverNotes: handoverNotes || 'Handed to customer via verified doorstep barcode scan',
+          cashCollected: Number(cashCollected) || (order.paymentMethod === PAYMENT_METHODS.COD ? order.totalAmount : 0)
+        };
+      } else {
+        order.proofOfDelivery = {
+          verifiedMethod: podMethod || 'DIRECT_OVERRIDE',
+          scannedCode: order.orderNumber,
+          verifiedAt: new Date(),
+          handoverNotes: handoverNotes || 'Handed to customer (Direct Confirmation)',
+          cashCollected: Number(cashCollected) || (order.paymentMethod === PAYMENT_METHODS.COD ? order.totalAmount : 0)
+        };
+      }
     }
 
     order.orderStatus = status;
@@ -719,6 +755,17 @@ export const updateDeliveryStatus = async (req, res, next) => {
         $inc: { revenue: order.subtotal, completedOrders: 1 }
       });
     }
+
+    const podNote = order.proofOfDelivery?.verifiedMethod === 'BARCODE_SCAN'
+      ? `Doorstep Barcode Verified: ${order.proofOfDelivery.scannedCode}. ${order.proofOfDelivery.handoverNotes || ''}`
+      : `Status updated to ${status}.`;
+
+    order.timeline.push({
+      status: status,
+      timestamp: new Date(),
+      note: status === ORDER_STATUSES.DELIVERED ? `Package delivered successfully! ${podNote}` : `Order status updated to ${status}`,
+      updatedBy: agent.fullName
+    });
 
     await order.save();
     notifyStatusEmail(order, status, `Your order status has been updated to: ${status.replace(/_/g, ' ')}`);

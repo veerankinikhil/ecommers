@@ -5,6 +5,7 @@ import BarcodeScannerModal from '../components/BarcodeScannerModal';
 import BarcodeVisual from '../components/BarcodeVisual';
 import DeliveryRouteMap, { PERMANENT_WAREHOUSES } from '../components/DeliveryRouteMap';
 import CustomerCallModal from '../components/CustomerCallModal';
+import DoorstepDeliveryScanModal from '../components/DoorstepDeliveryScanModal';
 
 export const formatDateTimeWithSeconds = (dateStr) => {
   if (!dateStr) return 'N/A';
@@ -29,6 +30,7 @@ export default function ActiveDeliveryPage() {
   const [updating, setUpdating] = useState(false);
   const [deliveryNote, setDeliveryNote] = useState('');
   const [isScanModalOpen, setIsScanModalOpen] = useState(false);
+  const [isDoorstepScanModalOpen, setIsDoorstepScanModalOpen] = useState(false);
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
   const [customerContactedMap, setCustomerContactedMap] = useState({});
   const [warehouses, setWarehouses] = useState(PERMANENT_WAREHOUSES);
@@ -653,26 +655,53 @@ export default function ActiveDeliveryPage() {
               )}
 
               {activeOrder.orderStatus === 'OUT_FOR_DELIVERY' && (
-                <button
-                  className="btn-agent btn-agent-primary"
-                  style={{ flex: 1, padding: '16px', justifyContent: 'center', fontSize: '0.96rem', fontWeight: '800', background: '#16A34A', borderColor: '#16A34A' }}
-                  disabled={updating}
-                  onClick={() => handleUpdateStatus('DELIVERED')}
-                >
-                  <i className="fa-solid fa-circle-check"></i> Deliver Stop #{selectedIndex + 1} &amp; Complete (Collect ₹140 Payout)
-                </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+                  <button
+                    className="btn-agent btn-agent-primary"
+                    style={{
+                      flex: 1,
+                      padding: '16px',
+                      justifyContent: 'center',
+                      fontSize: '0.98rem',
+                      fontWeight: '800',
+                      background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                      borderColor: '#10B981',
+                      boxShadow: '0 4px 18px rgba(16, 185, 129, 0.4)'
+                    }}
+                    disabled={updating}
+                    onClick={() => setIsDoorstepScanModalOpen(true)}
+                  >
+                    <i className="fa-solid fa-barcode"></i> Scan Package Barcode to Deliver (Stop #{selectedIndex + 1})
+                  </button>
+                  <span style={{ fontSize: '0.74rem', color: '#64748B', textAlign: 'center' }}>
+                    <i className="fa-solid fa-shield-halved" style={{ color: '#10B981' }}></i> Doorstep Proof-of-Delivery Barcode Scan required before customer handover
+                  </span>
+                </div>
               )}
             </div>
 
           </div>
         )}
 
-        {/* Barcode Scanner Modal */}
+        {/* Warehouse Pickup Barcode Scanner Modal */}
         <BarcodeScannerModal
           isOpen={isScanModalOpen}
           onClose={() => setIsScanModalOpen(false)}
           onOrderClaimed={handleOrderClaimedFromScan}
         />
+
+        {/* Doorstep Proof-of-Delivery Barcode Scan Modal */}
+        {isDoorstepScanModalOpen && activeOrder && (
+          <DoorstepDeliveryScanModal
+            isOpen={isDoorstepScanModalOpen}
+            onClose={() => setIsDoorstepScanModalOpen(false)}
+            order={activeOrder}
+            onDeliveryCompleted={(deliveredOrder, notes) => {
+              setDeliveryNote(`🎉 Stop #${selectedIndex + 1} Delivered & Verified via Doorstep Barcode Scan! Payout ₹140 credited.`);
+              fetchActiveOrders();
+            }}
+          />
+        )}
 
         {/* Customer Call Modal (In-App Pre-Delivery Handover Dialing) */}
         {isCallModalOpen && activeOrder && (

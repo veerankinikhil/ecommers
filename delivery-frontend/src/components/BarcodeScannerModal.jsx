@@ -35,6 +35,21 @@ export default function BarcodeScannerModal({ isOpen, onClose, onOrderClaimed })
   const scannerRef = useRef(null);
   const isStartingRef = useRef(false);
 
+  const handleSwitchToHttps = () => {
+    try {
+      const token = localStorage.getItem('novakart_delivery_token') || '';
+      const user = localStorage.getItem('novakart_delivery_user') || '';
+      let target = `https://${window.location.hostname}:3002${window.location.pathname}`;
+      if (token) {
+        target += `?auth_token=${encodeURIComponent(token)}&auth_user=${encodeURIComponent(user)}`;
+      }
+      window.location.href = target;
+    } catch (e) {
+      window.location.protocol = 'https:';
+    }
+  };
+
+
   const playScanBeep = () => {
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -159,12 +174,15 @@ export default function BarcodeScannerModal({ isOpen, onClose, onOrderClaimed })
 
       const html5QrCode = new Html5Qrcode('delivery-barcode-reader', {
         formatsToSupport: SUPPORTED_BARCODE_FORMATS,
-        verbose: false
+        verbose: false,
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true
+        }
       });
       scannerRef.current = html5QrCode;
 
       const config = {
-        fps: 15,
+        fps: 20,
         qrbox: (viewfinderWidth, viewfinderHeight) => {
           const width = Math.floor(Math.min(viewfinderWidth * 0.92, 340));
           const height = Math.floor(Math.min(viewfinderHeight * 0.78, 220));
@@ -175,16 +193,29 @@ export default function BarcodeScannerModal({ isOpen, onClose, onOrderClaimed })
 
       const cameraConstraint = targetCameraId ? targetCameraId : { facingMode: { ideal: 'environment' } };
 
-      await html5QrCode.start(
-        cameraConstraint,
-        config,
-        (decodedText) => {
-          handleBarcodeDetected(decodedText);
-        },
-        () => {
-          // Continuous frame scan without match
-        }
-      );
+      try {
+        await html5QrCode.start(
+          cameraConstraint,
+          config,
+          (decodedText) => {
+            handleBarcodeDetected(decodedText);
+          },
+          () => {
+            // Continuous frame scan without match
+          }
+        );
+      } catch (startErr) {
+        console.warn('Initial camera start failed, trying fallback video constraint:', startErr);
+        await html5QrCode.start(
+          true,
+          config,
+          (decodedText) => {
+            handleBarcodeDetected(decodedText);
+          },
+          () => {}
+        );
+      }
+
 
       setCameraActive(true);
       setCameraError('');
@@ -732,47 +763,75 @@ export default function BarcodeScannerModal({ isOpen, onClose, onOrderClaimed })
                   zIndex: 20
                 }}>
                   <i className="fa-solid fa-camera" style={{ fontSize: '1.8rem', color: '#38BDF8', marginBottom: '8px' }}></i>
-                  <p style={{ fontSize: '0.76rem', color: '#E2E8F0', lineHeight: '1.4', margin: '0 0 12px 0', maxWidth: '270px' }}>
+                  <p style={{ fontSize: '0.76rem', color: '#E2E8F0', lineHeight: '1.4', margin: '0 0 12px 0', maxWidth: '280px' }}>
                     {cameraError}
                   </p>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', maxWidth: '280px' }}>
                     <button
-                      onClick={() => requestCameraPermissionAndStart()}
+                      type="button"
+                      onClick={handleSwitchToHttps}
                       style={{
-                        background: '#2563EB',
+                        background: 'linear-gradient(135deg, #10B981, #059669)',
                         color: '#FFFFFF',
                         border: 'none',
-                        borderRadius: '20px',
-                        padding: '8px 16px',
-                        fontSize: '0.8rem',
+                        borderRadius: '24px',
+                        padding: '11px 18px',
+                        fontSize: '0.86rem',
                         fontWeight: '800',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '6px',
-                        boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)'
+                        justifyContent: 'center',
+                        gap: '8px',
+                        boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)'
                       }}
                     >
-                      <i className="fa-solid fa-camera"></i> Allow Camera Access
+                      <i className="fa-solid fa-shield-halved"></i> Open Secure HTTPS Camera
                     </button>
-                    <button
-                      onClick={() => requestCameraPermissionAndStart()}
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        color: '#E2E8F0',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                        borderRadius: '20px',
-                        padding: '8px 12px',
-                        fontSize: '0.78rem',
-                        fontWeight: '700',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '5px'
-                      }}
-                    >
-                      <i className="fa-solid fa-rotate-right"></i> Retry
-                    </button>
+
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button
+                        type="button"
+                        onClick={() => { stopCamera(); setActiveTab('input'); }}
+                        style={{
+                          flex: 1,
+                          background: '#2563EB',
+                          color: '#FFFFFF',
+                          border: 'none',
+                          borderRadius: '20px',
+                          padding: '8px 10px',
+                          fontSize: '0.78rem',
+                          fontWeight: '800',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '5px'
+                        }}
+                      >
+                        <i className="fa-solid fa-keyboard"></i> Order ID
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => requestCameraPermissionAndStart()}
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.08)',
+                          color: '#E2E8F0',
+                          border: '1px solid rgba(255, 255, 255, 0.15)',
+                          borderRadius: '20px',
+                          padding: '8px 12px',
+                          fontSize: '0.78rem',
+                          fontWeight: '700',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}
+                      >
+                        <i className="fa-solid fa-rotate-right"></i> Retry
+                      </button>
+                    </div>
                   </div>
                 </div>
               ) : !cameraActive ? (

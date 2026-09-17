@@ -1,0 +1,229 @@
+{
+  "users": {
+    "f1o44m": {
+      "_id": "f1o44m",
+      "id": "f1o44m",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+      "role": "admin",
+      "isBlocked": false,
+      "name": "System Super Administrator",
+      "email": "admin@yourstore.com",
+      "password": "$2a$10$W7N2WMrkTYMyNOAbRS8eV.RMzi4asyKCdPI1TNZUdk/RhCsZmSWvu",
+      "phone": "+91 98765 43210",
+      "createdAt": "2026-08-27T09:28:19.300Z",
+      "updatedAt": "2026-08-27T09:28:19.301Z"
+    },
+    "2vp2u": {
+      "_id": "2vp2u",
+      "id": "2vp2u",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "role": "seller",
+      "isBlocked": false,
+      "name": "Vikram Mehta",
+      "email": "seller@gadgethub.com",
+      "password": "$2a$10$yR9kaMms.Y.RaErhAFlniuIXG3hDpNYHBYGfZW71W7xs5t2NZU7q6",
+      "phone": "+91 98112 34567",
+      "createdAt": "2026-08-27T09:28:19.421Z",
+      "updatedAt": "2026-08-27T09:28:19.421Z"
+    },
+    "jw44l7": {
+      "_id": "jw44l7",
+      "id": "jw44l7",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
+      "role": "seller",
+      "isBlocked": false,
+      "name": "Priya Sharma",
+      "email": "seller2@freshmart.com",
+      "password": "$2a$10$tqLGOkY/Wz28L2P7oCO16etxciYVVUG4SoGsDVz59CBqyMfR/Z42a",
+      "phone": "+91 98223 45678",
+      "createdAt": "2026-08-27T09:28:19.527Z",
+      "updatedAt": "2026-08-27T09:28:19.527Z"
+    },
+    "q9kztu": {
+      "_id": "q9kztu",
+      "id": "q9kztu",
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+      "role": "delivery",
+      "isBlocked": false,
+      "name": "Rahul Sharma",
+      "email": "driver@speedy.com",
+      "password": "$2a$10$nKdYjZpcSXmm.w76R3li5eFmSEa.8.QKGVZn53ElFX3BFrJ46lDHC",
+      "phone": "+91 98334 56789",
+      "createdAt": "2026-08-27T09:28:19.645Z",
+      "updatedAt": "2026-08-27T09:28:19.645Z"
+    },
+    "6mys1": {
+      "_id": "6mys1",
+      "id": "6mys1",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
+      "role": "customer",
+      "isBlocked": false,
+      "name": "Aarav Patel",
+      "email": "customer@novakart.com",
+      "password": "$2a$10$WPXc60ro8JYUqLneH98x3.PjJTykMXi05GJ2/nqCyaWWCwbW3HT8q",
+      "phone": "+91 98445 67890",
+      "createdAt": "2026-08-27T09:28:19.753Z",
+      "updatedAt": "2026-08-27T09:28:19.753Z"
+    }
+  },
+  "sellers": {
+    "qtazn8": {
+      "_id": "qtazn8",
+      "id": "qtazn8",
+      "location": {
+        "lat": 28.4595,
+        "lng": 77.0266,
+        "city": "Gurugram",
+        "state": "Haryana",
+        "postalCode": "122002"
+      },
+      "status": "approved",
+      "isApproved": true,
+      "revenue": 0,
+      "totalOrders": 0,
+      "completedOrders": 0,
+      "logo": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=200&q=80",
+      "banner": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80",
+      "userId": "2vp2u",
+      "storeName": "GadgetHub Pro Store",
+      "ownerName": "Vikram Mehta",
+      "email": "seller@gadgethub.com",
+      "phone": "+91 98112 34567",
+      "businessAddress": "Plot 42, Cyber Hub, Phase 2, Gurugram, Haryana",
+      "businessRegistrationNumber": "GSTIN07AAACG1234F1Z5",
+      "taxId": "PANAAACG1234F",
+      "createdAt": "2026-08-27T09:28:19.524Z",
+      "updatedAt": "2026-08-27T09:28:19.524Z"
+    },
+    "i3n5a": {
+      "_id": "i3n5a",
+      "id": "i3n5a",
+      "location": {
+        "lat": 28.5355,
+        "lng": 77.391,
+        "city": "Noida",
+        "state": "Uttar Pradesh",
+        "postalCode": "201301"
+      },
+      "status": "pending_approval",
+      "isApproved": false,
+      "revenue": 0,
+      "totalOrders": 0,
+      "completedOrders": 0,
+      "logo": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=200&q=80",
+      "banner": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80",
+      "userId": "jw44l7",
+      "storeName": "FreshMart Organic Groceries",
+      "ownerName": "Priya Sharma",
+      "email": "seller2@freshmart.com",
+      "phone": "+91 98223 45678",
+      "businessAddress": "Shop 12, Market Square, Sector 15, Noida",
+      "createdAt": "2026-08-27T09:28:19.641Z",
+      "updatedAt": "2026-08-27T09:28:19.641Z"
+    }
+  },
+  "deliveryAgents": {
+    "hndr9p": {
+      "_id": "hndr9p",
+      "id": "hndr9p",
+      "vehicleType": "Motorcycle",
+      "profileImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+      "currentLocation": {
+        "lat": 28.6139,
+        "lng": 77.209,
+        "address": "Connaught Place, New Delhi"
+      },
+      "isOnline": true,
+      "isAvailable": true,
+      "status": "approved",
+      "isApproved": true,
+      "todayDeliveries": 0,
+      "completedDeliveries": 48,
+      "totalEarnings": 7200,
+      "activeOrderId": null,
+      "userId": "q9kztu",
+      "fullName": "Rahul Sharma",
+      "email": "driver@speedy.com",
+      "phone": "+91 98334 56789",
+      "address": "Sector 29, Central Delhi",
+      "vehicleNumber": "DL-01-AB-1234",
+      "drivingLicense": "DL-IND-2022-889977",
+      "createdAt": "2026-08-27T09:28:19.751Z",
+      "updatedAt": "2026-08-27T09:28:19.751Z"
+    }
+  },
+  "categories": {
+    "egwxiq": {
+      "_id": "egwxiq",
+      "id": "egwxiq",
+      "status": "active",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics",
+      "icon": "fa-laptop",
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+      "description": "Laptops, Headphones, Smartwatches, and High-Tech Gear",
+      "createdAt": "2026-08-27T09:28:19.873Z",
+      "updatedAt": "2026-08-27T09:28:19.873Z"
+    },
+    "yf48e6": {
+      "_id": "yf48e6",
+      "id": "yf48e6",
+      "status": "active",
+      "name": "Fashion & Apparel",
+      "slug": "fashion",
+      "icon": "fa-shirt",
+      "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80",
+      "description": "Trending Men & Women Apparel, Shoes, and Accessories",
+      "createdAt": "2026-08-27T09:28:19.874Z",
+      "updatedAt": "2026-08-27T09:28:19.874Z"
+    },
+    "280zgb": {
+      "_id": "280zgb",
+      "id": "280zgb",
+      "status": "active",
+      "name": "Groceries & Gourmet",
+      "slug": "groceries",
+      "icon": "fa-basket-shopping",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80",
+      "description": "Fresh Produce, Organic Staples, Coffee, and Daily Essentials",
+      "createdAt": "2026-08-27T09:28:19.875Z",
+      "updatedAt": "2026-08-27T09:28:19.875Z"
+    },
+    "4xvze": {
+      "_id": "4xvze",
+      "id": "4xvze",
+      "status": "active",
+      "name": "Home & Living",
+      "slug": "home-living",
+      "icon": "fa-couch",
+      "image": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
+      "description": "Modern Decor, Kitchenware, Bedding, and Smart Home",
+      "createdAt": "2026-08-27T09:28:19.875Z",
+      "updatedAt": "2026-08-27T09:28:19.875Z"
+    },
+    "itgjs5": {
+      "_id": "itgjs5",
+      "id": "itgjs5",
+      "status": "active",
+      "name": "Beauty & Personal Care",
+      "slug": "beauty",
+      "icon": "fa-sparkles",
+      "image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80",
+      "description": "Skincare, Makeup, Fragrances, and Wellness Essentials",
+      "createdAt": "2026-08-27T09:28:19.876Z",
+      "updatedAt": "2026-08-27T09:28:19.876Z"
+    },
+    "1uakui": {
+      "_id": "1uakui",
+      "id": "1uakui",
+      "status": "active",
+      "name": "Sports & Fitness",
+      "slug": "sports",
+      "icon": "fa-dumbbell",
+      "image": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80",
+      "description": "Gym Equipment, Activewear, Yoga Gear, and Nutrition",
+      "createdAt": "2026-08-27T09:28:19.877Z",
+      "updatedAt": "2026-08-27T09:28:19.877Z"
+    }
+  }
+}

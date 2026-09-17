@@ -1,0 +1,29 @@
+{
+  "name": "smartcart-platform",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Production Multi-Vendor E-Commerce Platform with 4 Frontend Portals and Unified Node.js MERN Backend",
+  "scripts": {
+    "start": "node run.js",
+    "dev": "node run.js",
+    "backend": "cd backend && npm start",
+    "customer": "cd customer-frontend && npm run dev",
+    "seller": "cd seller-frontend && npm run dev",
+    "delivery": "cd delivery-frontend && npm run dev",
+    "admin": "cd admin-frontend && npm run dev",
+    "warehouse": "cd warehouse-frontend && npm run dev",
+    "payments": "cd payments-frontend && npm run dev"
+  },
+  "keywords": [
+    "mern",
+    "multi-vendor",
+    "socket.io",
+    "haversine-dispatch",
+    "e-commerce"
+  ],
+  "author": "NovaKart",
+  "license": "ISC",
+  "dependencies": {
+    "localtunnel": "^2.0.2"
+  }
+}
